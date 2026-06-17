@@ -1,158 +1,413 @@
-🚀 Advanced AI Studio
+# 🚀 Advanced AI Studio
 
-An enterprise-grade Developer Portal and API Gateway engineered to bridge cloud frontends with local hardware inference engines.
+**Enterprise-Grade Developer Portal & API Gateway for Local AI Infrastructure**
 
-🌌 System Overview
+Advanced AI Studio is a high-performance AI orchestration platform that securely exposes locally hosted Large Language Models (LLMs) and Diffusion Models to web applications. It enables developers to leverage powerful AI capabilities without relying on expensive cloud GPU services.
 
-Advanced AI Studio operates as a high-performance orchestration layer, exposing localized LLM and diffusion models securely to web environments. The architecture is designed to handle OAuth lifecycle management, dynamic cryptographic key generation, strict rate limiting, and parallel asynchronous processing. This infrastructure empowers developers to build and scale applications utilizing advanced machine learning capabilities without the overhead of cloud-based GPU provisioning.
+---
 
-🧠 Architectural Deep Dive & Data Flow
+## 🌌 Overview
 
-The system topology is built on a decoupled, asynchronous framework designed to maximize throughput on constrained hardware (e.g., 5050 CPU architectures).
+Advanced AI Studio acts as a bridge between modern web applications and locally running AI models.
 
-1. Ingestion & Security Layer
+The platform provides:
 
-Incoming requests are routed through a secure Ngrok HTTP tunnel. The FastAPI backend employs strict Cross-Origin Resource Sharing (CORS) configurations, neutralizing Failed to fetch anomalies by explicitly decoupling allow_credentials from wildcard origins. Authentication is managed via Netlify Identity, mapping OAuth tokens to deterministic local workspace environments.
+* 🔐 Secure Authentication & API Management
+* ⚡ High-Performance Async Processing
+* 🧠 Local LLM & Vision Model Integration
+* 🖼️ AI Image Generation Pipelines
+* 📊 Usage Analytics & Rate Limiting
+* 🌍 Public API Exposure via Ngrok
+* 🔑 OAuth Authentication with Google & GitHub
 
-2. Concurrency Orchestration
+---
 
-The API gateway utilizes a non-blocking execution model. By leveraging Python's httpx.AsyncClient alongside JavaScript's Promise.all() at the edge, the system successfully multiplexes up to 15 concurrent prompt resolutions. This prevents event-loop starvation during intensive inference cycles.
+# 🏗️ Architecture
 
-3. Inference Routing & Max Llama Optimization
+```text
+┌────────────────────┐
+│   Frontend Client  │
+│ (HTML / JS / CSS)  │
+└──────────┬─────────┘
+           │
+           ▼
+┌────────────────────┐
+│  Netlify Hosting   │
+│  + OAuth Identity  │
+└──────────┬─────────┘
+           │
+           ▼
+┌────────────────────┐
+│     Ngrok Tunnel   │
+└──────────┬─────────┘
+           │
+           ▼
+┌────────────────────┐
+│   FastAPI Gateway  │
+│ Async Request Hub  │
+└──────────┬─────────┘
+           │
+ ┌─────────┴─────────┐
+ ▼                   ▼
+Ollama LLM       Diffusion Node
+Llama3/LLaVA     SDXL-Turbo
+```
 
-Payloads are dynamically routed based on semantic intent:
+---
 
-Text & Vision: Dispatched to local Ollama endpoints running advanced_ai or llava models.
+# 🧠 Request Processing Pipeline
 
-Media Synthesis: Intercepted by the Max Llama Pipeline. Raw prompts are pre-processed by the LLM to maximize descriptive density and visual fidelity before being passed to the PyTorch diffusion engine.
+## 1. Security Layer
 
-4. CPU-Optimized Execution Pipeline
+Incoming traffic is routed through:
 
-To prevent memory exhaustion during image generation, the system utilizes sdxl-turbo wrapped in torch.float32 tensors. Memory overhead is strictly bounded using PyTorch attention-slicing protocols. An intelligent fallback mechanism guarantees system uptime by shifting to algorithmic procedural generation if the primary tensor pipelines exceed hardware limits.
+* Ngrok secure tunnel
+* FastAPI backend
+* Strict CORS policies
+* API key validation
+* OAuth token verification
 
-✨ Core Platform Capabilities
+Authentication is managed through:
 
-⚡ 15x Parallel Execution: Asynchronous request batching for high-throughput prompt evaluation.
+* Google OAuth
+* GitHub OAuth
+* Netlify Identity
 
-🧠 Max Llama Interception: Automated prompt expansion for superior diffusion output.
+---
 
-🖼️ Hardware-Safe Synthesis: Bounded-memory image generation with automated fallback redundancy.
+## 2. Async Concurrency Engine
 
-👁️ Multimodal Vision: Direct integration for base64 image ingestion and contextual analysis.
+The platform uses a fully asynchronous architecture.
 
-🔐 Identity Federation: Google and GitHub OAuth bridging via Netlify.
+### Backend
 
-📊 Telemetry & Governance: Cryptographic API key mapping, global usage analytics, and enforced 5-generation daily limits for non-administrative accounts.
+```python
+httpx.AsyncClient
+FastAPI Async Routes
+```
 
-🛠️ Technology Matrix
+### Frontend
 
-Subsystem
+```javascript
+Promise.all()
+Fetch API
+```
 
-Stack Implementation
+### Benefits
 
-Operational Role
+* Up to 15 parallel requests
+* Reduced latency
+* Non-blocking execution
+* High throughput on CPU hardware
 
-Client Edge
+---
 
-HTML5, Vanilla JS, Tailwind CSS
+## 3. AI Inference Routing
 
-Adaptive glassmorphism UI, concurrent batch dispatching.
+Requests are automatically routed based on intent.
 
-Federation
+### Text Generation
 
-Netlify Identity
+```text
+User Prompt
+    ↓
+Ollama
+    ↓
+Llama 3
+```
 
-Zero-trust OAuth bridging to internal data structures.
+### Vision Analysis
 
-Core Gateway
+```text
+Image
+   ↓
+LLaVA
+   ↓
+Visual Reasoning
+```
 
-Python 3.10+, FastAPI, Uvicorn
+### Image Generation
 
-High-performance asynchronous REST routing.
+```text
+Prompt
+   ↓
+Max Llama Optimizer
+   ↓
+SDXL-Turbo
+   ↓
+Generated Image
+```
 
-Semantic Engine
+---
 
-Ollama (llama3, llava)
+## 🦙 Max Llama Prompt Optimization
 
-Contextual reasoning and prompt optimization.
+Before image generation:
 
-Diffusion Node
+1. User prompt is analyzed
+2. Prompt is expanded automatically
+3. Visual details are enriched
+4. Optimized prompt is sent to diffusion engine
 
-PyTorch, HuggingFace Diffusers
+This significantly improves:
 
-Asset synthesis via localized CPU attention-slicing.
+* Composition quality
+* Object accuracy
+* Lighting consistency
+* Overall realism
 
-Network Tunnel
+---
 
-Ngrok
+# 🖼️ Diffusion Pipeline
 
-Exposing localhost instances to public web perimeters.
+The image generation engine uses:
 
-🚀 Deployment Instructions
+| Component    | Technology            |
+| ------------ | --------------------- |
+| Framework    | PyTorch               |
+| Models       | SDXL-Turbo            |
+| Optimization | Attention Slicing     |
+| Precision    | Float32               |
+| Fallback     | Procedural Generation |
 
-1. Inference Engine Setup
+### Safety Features
 
-Ensure Python 3.10+ and Ollama are installed on the host hardware.
+* Memory-aware execution
+* CPU-optimized workloads
+* Automatic fallback handling
+* OOM prevention
 
-# Initialize base semantic and vision models
-ollama run llama3:instruct  # Alias as 'advanced_ai'
-ollama run llava
+---
 
+# ✨ Core Features
 
-2. Core Gateway Initialization
+## ⚡ Parallel Processing
 
-Establish the Python virtual environment and install the inference stack.
+* 15x concurrent execution
+* Async batching
+* Request multiplexing
 
-# Provision isolated environment
+## 🧠 AI Reasoning
+
+* Llama 3 integration
+* Prompt enhancement
+* Contextual understanding
+
+## 👁️ Vision Processing
+
+* Base64 image analysis
+* Visual reasoning
+* Multimodal interactions
+
+## 🖼️ Image Generation
+
+* SDXL-Turbo support
+* Prompt optimization
+* Hardware-safe execution
+
+## 🔐 Authentication
+
+* Google OAuth
+* GitHub OAuth
+* Netlify Identity
+
+## 📊 Monitoring
+
+* API analytics
+* Usage tracking
+* Daily generation limits
+* Admin controls
+
+---
+
+# 🛠️ Technology Stack
+
+| Layer          | Technology              |
+| -------------- | ----------------------- |
+| Frontend       | HTML5, CSS3, JavaScript |
+| UI Framework   | Tailwind CSS            |
+| Authentication | Netlify Identity        |
+| Backend        | FastAPI                 |
+| Runtime        | Uvicorn                 |
+| Async Engine   | HTTPX                   |
+| LLM Engine     | Ollama                  |
+| Models         | Llama 3, LLaVA          |
+| Diffusion      | HuggingFace Diffusers   |
+| ML Framework   | PyTorch                 |
+| Tunneling      | Ngrok                   |
+
+---
+
+# 🚀 Installation
+
+## 1. Install Ollama
+
+Download and install Ollama.
+
+Pull required models:
+
+```bash
+ollama pull llama3
+ollama pull llava
+```
+
+---
+
+## 2. Create Python Environment
+
+```bash
 python -m venv venv
-source venv/bin/activate  # Windows execution: venv\Scripts\activate
+```
 
-# Install critical dependencies
+### Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+---
+
+## 3. Install Dependencies
+
+```bash
 pip install fastapi uvicorn httpx pydantic diffusers transformers accelerate torch
+```
 
-# Ignite the asynchronous server
+---
+
+## 4. Start API Gateway
+
+```bash
 uvicorn main:app --host 0.0.0.0 --port 8000
+```
 
+---
 
-3. Tunnel Configuration
+## 5. Configure Ngrok
 
-Deploy a secure tunnel to expose the local API port to the public internet.
+```bash
+ngrok http 8000
+```
 
-# Bind port 8000 to a static Ngrok domain
-ngrok http --domain=your-static-domain.ngrok-free.app 8000
+Or use a reserved domain:
 
+```bash
+ngrok http --domain=your-domain.ngrok-free.app 8000
+```
 
-4. Client Edge Deployment
+---
 
-Deploy index.html to a static hosting provider like Netlify.
+## 6. Deploy Frontend
 
-Activate Netlify Identity within the deployment settings.
+Deploy:
 
-Configure external OAuth providers (Google/GitHub).
+```text
+index.html
+```
 
-Access the live URL and utilize the Configure API Endpoint Location module to link the Ngrok tunnel.
+to:
 
-💻 Integration Architecture
+* Netlify
+* GitHub Pages
+* Vercel
 
-The portal provides dynamic, language-agnostic code generation. Below is a blueprint for implementing asynchronous, concurrent requests via Node.js.
+Enable:
 
+* Netlify Identity
+* Google OAuth
+* GitHub OAuth
+
+---
+
+# 💻 API Example
+
+## JavaScript
+
+```javascript
 const axios = require('axios');
 
 async function executeParallelBatch() {
-  const prompts = ["Analyze optical parameters.", "Calculate vector trajectories."];
-  
-  // Dispatch concurrent requests leveraging Promise mapping
-  const requests = prompts.map(promptData => 
-    axios.post("[https://your-domain.ngrok-free.app/v1/chat](https://your-domain.ngrok-free.app/v1/chat)", { prompt: promptData }, {
-      headers: {
-        "x-api-key": "sk-advanced-xxxxxx",
-        "ngrok-skip-browser-warning": "true"
+
+  const prompts = [
+    "Analyze optical parameters",
+    "Calculate vector trajectories"
+  ];
+
+  const requests = prompts.map(prompt =>
+    axios.post(
+      "https://your-domain.ngrok-free.app/v1/chat",
+      { prompt },
+      {
+        headers: {
+          "x-api-key": "sk-advanced-xxxxxx",
+          "ngrok-skip-browser-warning": "true"
+        }
       }
-    })
+    )
   );
-  
-  const results = await Promise.all(requests);
-  results.forEach(res => console.log("Engine Response:", res.data.reply));
+
+  const responses = await Promise.all(requests);
+
+  responses.forEach(response => {
+    console.log(response.data.reply);
+  });
 }
 
 executeParallelBatch();
+```
+
+---
+
+# 📊 Platform Governance
+
+### Standard Users
+
+* 5 image generations/day
+* API rate limiting
+* Usage analytics
+
+### Administrators
+
+* Unlimited usage
+* Full telemetry access
+* API management tools
+
+---
+
+# 🔮 Roadmap
+
+* [ ] WebSocket Streaming
+* [ ] Multi-Agent Collaboration
+* [ ] Distributed Inference Nodes
+* [ ] GPU Cluster Support
+* [ ] Model Marketplace
+* [ ] Fine-Tuning Dashboard
+* [ ] Real-Time Monitoring Panel
+
+---
+
+# 📄 License
+
+MIT License
+
+Copyright (c) 2026 Advanced AI Studio
+
+---
+
+## ⭐ Support
+
+If you find this project useful:
+
+⭐ Star the repository
+
+🍴 Fork the project
+
+🐛 Submit issues and feature requests
+
+🚀 Build amazing AI-powered applications
