@@ -1,0 +1,60 @@
+{
+    "admin": {
+        "name": "System Admin",
+        "email": "admin",
+        "password_hash": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+        "projects": {
+            "Master Node": [
+                {
+                    "name": "Admin Key",
+                    "key": "sk-advanced-admin-595qMyMHMqvyVFKK",
+                    "usage": 10
+                }
+            ]
+        },
+        "is_admin": true
+    },
+    "sanjaysps2004@gmail.com": {
+        "name": "Sanjay S P",
+        "email": "sanjaysps2004@gmail.com",
+        "projects": {
+            "Default Project": [],
+            "Sanjay": [
+                {
+                    "name": "key",
+                    "key": "sk-advanced-6xBoc7aHuQFeLRS-HNLouA",
+                    "usage": 16
+                }
+            ]
+        },
+        "is_admin": false,
+        "image_limit_tracking": {
+            "date": "2026-06-15",
+            "count": 1
+        }
+    },
+    "mmahadevamahadevaiha@gmail.com": {
+        "name": "Santhosh M",
+        "email": "mmahadevamahadevaiha@gmail.com",
+        "projects": {
+            "Default Project": [],
+            "Hi": []
+        },
+        "is_admin": false
+    },
+    "renukasanthu06@gmail.com": {
+        "name": "Santhosh M",
+        "email": "renukasanthu06@gmail.com",
+        "projects": {
+            "Default Project": [],
+            "Santhosh ": [
+                {
+                    "name": "Santhosh ",
+                    "key": "sk-advanced-8uAEFY95oMubKRQOkDG8kg",
+                    "usage": 2
+                }
+            ]
+        },
+        "is_admin": false
+    }
+}
